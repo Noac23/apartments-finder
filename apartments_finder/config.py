@@ -19,8 +19,6 @@ class Config:
     TELEGRAM_BOT_APARTMENTS_GROUP_CHAT_ID: str = os.environ["TELEGRAM_BOT_APARTMENTS_GROUP_CHAT_ID"]
     TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID: str = os.environ.get("TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID")
 
-    FACEBOOK_USERNAME: str = os.environ["FACEBOOK_USERNAME"]
-    FACEBOOK_PASSWORD: str = os.environ["FACEBOOK_PASSWORD"]
     FACEBOOK_GROUPS: Set[str] = {
         v.strip() for v in os.environ["FACEBOOK_GROUPS"].split(",") if v.strip()
     }
