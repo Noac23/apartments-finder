@@ -1,10 +1,12 @@
 import asyncio
 import random
+import os
+import json
 from abc import ABC, abstractmethod
 from typing import AsyncIterator
 
 from entities import ApartmentPost
-from facebook_scraper import get_posts
+from facebook_scraper import get_posts, set_cookies
 from apartments_finder.logger import logger
 
 
@@ -15,9 +17,13 @@ class ApartmentsScraper(ABC):
 
 
 class FacebookGroupsScraper(ApartmentsScraper):
-    def __init__(self, username, password, group_ids, posts_per_group_limit, total_posts_limit):
+    def __init__(self, group_ids, posts_per_group_limit, total_posts_limit):
+        # טוען קוקיז מה־Secret
+        cookies_json = os.environ["FACEBOOK_COOKIES_JSON"]
+        cookies = json.loads(cookies_json)
+        set_cookies(cookies)
+
         self._default_config = {
-            "credentials": (username, password),
             "extra_info": False,
             "page_limit": 10,
             "options": {
@@ -58,23 +64,14 @@ class FacebookGroupsScraper(ApartmentsScraper):
 
                 total_posts_counter += 1
                 if total_posts_counter >= self._total_posts_limit:
-                    logger.info(
-                        "Total posts limit reached. Stop returning more posts..."
-                    )
+                    logger.info("Total posts limit reached. Stop returning more posts...")
                     return
 
                 posts_per_group_counter += 1
                 if posts_per_group_counter >= self._posts_per_group_limit:
-                    logger.info(
-                        "Total posts per group limit reached. Moving to next group id..."
-                    )
+                    logger.info("Posts per group limit reached. Moving to next group...")
                     break
 
-            # Remove credentials from config in order to avoid re-authentication
-            get_posts_config.pop('credentials', None)
-
             sleep_duration = random.randint(1, 5)
-            logger.info(
-                f"Sleeping for {sleep_duration} seconds so the bot won't be detected"
-            )
+            logger.info(f"Sleeping for {sleep_duration} seconds to avoid detection")
             await asyncio.sleep(sleep_duration)
