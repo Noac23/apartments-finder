@@ -3,7 +3,7 @@ name: Run Apartments Finder
 on:
   schedule:
     - cron: "0 8 * * *"  # כל יום ב־08:00 UTC (11:00 שעון ישראל)
-  workflow_dispatch:      # מאפשר להריץ גם ידנית מה־GitHub UI
+  workflow_dispatch:
 
 jobs:
   run:
@@ -17,6 +17,7 @@ jobs:
       TELEGRAM_BOT_APARTMENTS_GROUP_CHAT_ID: ${{ secrets.TELEGRAM_BOT_APARTMENTS_GROUP_CHAT_ID }}
       TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID: ${{ secrets.TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      PYTHONPATH: .  # ✅ מוסיף את תיקיית הפרויקט ל־Python Path
 
     steps:
       - name: Checkout repository
