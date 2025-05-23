@@ -3,21 +3,18 @@ name: Run Apartments Finder
 on:
   schedule:
     - cron: "0 8 * * *"  # כל יום ב־08:00 UTC (11:00 שעון ישראל)
-  workflow_dispatch:
+  workflow_dispatch:      # מאפשר להריץ גם ידנית
 
 jobs:
   run:
     runs-on: ubuntu-latest
 
     env:
-      FACEBOOK_USERNAME: ${{ secrets.FACEBOOK_USERNAME }}
-      FACEBOOK_PASSWORD: ${{ secrets.FACEBOOK_PASSWORD }}
-      FACEBOOK_GROUPS: ${{ secrets.FACEBOOK_GROUPS }}
+      FACEBOOK_COOKIES_JSON: ${{ secrets.FACEBOOK_COOKIES_JSON }}
       TELEGRAM_BOT_API_KEY: ${{ secrets.TELEGRAM_BOT_API_KEY }}
       TELEGRAM_BOT_APARTMENTS_GROUP_CHAT_ID: ${{ secrets.TELEGRAM_BOT_APARTMENTS_GROUP_CHAT_ID }}
       TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID: ${{ secrets.TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      PYTHONPATH: .  # ✅ מוסיף את תיקיית הפרויקט ל־Python Path
 
     steps:
       - name: Checkout repository
