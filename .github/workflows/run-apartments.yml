@@ -3,7 +3,7 @@ name: Run Apartments Finder
 on:
   schedule:
     - cron: "0 8 * * *"  # כל יום ב־08:00 UTC (11:00 שעון ישראל)
-  workflow_dispatch:      # מאפשר להריץ גם ידנית
+  workflow_dispatch:      # מאפשר להריץ גם ידנית מה־GitHub UI
 
 jobs:
   run:
@@ -33,4 +33,4 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run main script
-        run: python -m apartments_finder.main
+        run: python apartments_finder/main.py
