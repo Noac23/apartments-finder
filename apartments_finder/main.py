@@ -1,24 +1,24 @@
 import asyncio
-
 import telegram
 
-from apartments_finder.apartment_post_enricher import (ApartmentPostEnricher)
-from apartments_finder.apartment_post_filter import (ApartmentPostFilterer)
+from apartments_finder.apartment_post_enricher import ApartmentPostEnricher
+from apartments_finder.apartment_post_filter import ApartmentPostFilterer
 from apartments_finder.apartments_scraper import FacebookGroupsScraper, ApartmentsScraper
 from apartments_finder.config import config
 from apartments_finder.exceptions import EnrichApartmentPostError
 from apartments_finder.logger import logger
 
+# יצירת בוט טלגרם
 bot = telegram.Bot(config.TELEGRAM_BOT_API_KEY)
+
+# יצירת סקרייפר עם התחברות באמצעות cookies בלבד
 apartment_scraper: ApartmentsScraper = FacebookGroupsScraper(
-    config.FACEBOOK_USERNAME,
-    config.FACEBOOK_PASSWORD,
     config.FACEBOOK_GROUPS,
     config.POSTS_PER_GROUP_LIMIT,
     config.TOTAL_POSTS_LIMIT
 )
-apartment_post_parser = ApartmentPostEnricher()
 
+apartment_post_parser = ApartmentPostEnricher()
 apartment_post_filterer = ApartmentPostFilterer()
 
 
@@ -40,7 +40,6 @@ async def main():
             try:
                 apartment_post = await apartment_post_parser.enrich(apartment_post)
                 enriched_posts += 1
-
                 logger.info("Successfully enriched this apartment with more data")
             except EnrichApartmentPostError:
                 logger.info("Could not enrich data from post. Skipping post...")
@@ -60,7 +59,7 @@ async def main():
 
             logger.info("Successfully sent this apartment to the telegram bot")
 
-    except Exception:  # pylint: disable=W0718
+    except Exception:
         logger.exception("Unexpected error - stopping execution...")
 
     if config.TELEGRAM_BOT_APARTMENTS_LOGS_GROUP_CHAT_ID:
@@ -72,5 +71,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    asyncio.run(main())
