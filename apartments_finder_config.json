@@ -3,15 +3,17 @@
     {
       "min_rooms": 2,
       "max_rooms": 3,
-      "min_rent": 4000,
-      "max_rent": 6000
+      "min_rent": 1500,
+      "max_rent": 5500
     }
   ],
   "post_filters": [
     {
       "words_to_ignore_post_on": [
         "מחפש",
-        "מחפשת"
+        "מחפשת",
+        "מחפשים",
+        "סאבלט"
       ],
       "max_post_minutes_difference": 150,
       "max_post_text_len": 800
