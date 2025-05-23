@@ -2,7 +2,7 @@
   "apartment_filters": [
     {
       "min_rooms": 2,
-      "max_rooms": 3,
+      "max_rooms": 5,
       "min_rent": 1500,
       "max_rent": 9000
     }
